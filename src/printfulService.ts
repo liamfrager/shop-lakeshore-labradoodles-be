@@ -1,6 +1,8 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
 import { Order } from './types';
 
+dotenv.config();
 const PRINTFUL_AUTH_TOKEN = process.env.PRINTFUL_AUTH_TOKEN;
 const AUTO_FULFILL_PRINTFUL_ORDERS = process.env.AUTO_FULFILL_PRINTFUL_ORDERS === 'True';
 

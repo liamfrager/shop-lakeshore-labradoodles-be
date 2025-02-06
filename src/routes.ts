@@ -8,7 +8,7 @@ router.get('/products', async (req, res) => {
         const products = await PrintfulService.getAllProducts();
         res.json(products);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: (error as Error).message });
     }
 });
 
@@ -17,7 +17,7 @@ router.get('/products/:id', async (req, res) => {
         const product = await PrintfulService.getProduct(Number(req.params.id));
         res.json(product);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: (error as Error).message });
     }
 });
 
@@ -26,7 +26,7 @@ router.get('/variants/:id', async (req, res) => {
         const variant = await PrintfulService.getVariant(Number(req.params.id));
         res.json(variant);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: (error as Error).message });
     }
 });
 
@@ -36,7 +36,7 @@ router.post('/orders', async (req, res) => {
         const response = await PrintfulService.placeOrder(order);
         res.json(response);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: (error as Error).message });
     }
 });
 
