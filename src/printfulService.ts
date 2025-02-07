@@ -28,7 +28,7 @@ export default class PrintfulService {
             headers: this.apiHeaders,
             params: {limit: 100},
         });
-        return response.data['result'];
+        return response.data.result;
     }
 
     // Takes a Printful sync product ID as an input and returns details on all its variants

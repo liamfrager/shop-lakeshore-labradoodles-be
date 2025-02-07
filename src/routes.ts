@@ -30,6 +30,15 @@ router.get('/variants/:id', async (req, res) => {
     }
 });
 
+router.get('/products/:id/color', async (req, res) => {
+    try {
+        const colorCode = await PrintfulService.getColorCode(Number(req.params.id));
+        res.json(colorCode);
+    } catch (error) {
+        res.status(500).json({ error: (error as Error).message });
+    }
+});
+
 router.post('/orders', async (req, res) => {
     try {
         const order = req.body;
