@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import PrintfulService from './printfulService';
+import StripeService from './stripeService';
 
 const router = Router();
 
@@ -44,6 +45,16 @@ router.post('/orders', async (req, res) => {
         const order = req.body;
         const response = await PrintfulService.placeOrder(order);
         res.json(response);
+    } catch (error) {
+        res.status(500).json({ error: (error as Error).message });
+    }
+});
+
+router.post('/stripe/checkout', async (req, res) => {
+    try {
+        const cart = req.body.body;
+        const checkoutSession = await StripeService.createCheckoutSession(cart);
+        res.json(checkoutSession);
     } catch (error) {
         res.status(500).json({ error: (error as Error).message });
     }

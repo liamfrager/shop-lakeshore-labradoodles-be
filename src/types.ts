@@ -16,9 +16,21 @@ export interface Order {
     }[];
     packing_slip?: {
         email: string;
-        phone?: string;
-        message?: string;
-        logo_url?: string;
-        store_name?: string;
+        phone: string;
+        message: string;
+        logo_url: string;
+        store_name: string;
     };
+}
+
+export interface Cart {
+    items: { [id: number]: CartItem },
+}
+
+export interface CartItem {
+    id: number,
+    name: string,
+    price: number,
+    img?: string,
+    quantity: number,
 }
