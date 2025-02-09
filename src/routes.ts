@@ -17,8 +17,14 @@ router.get('/products/:id', async (req, res) => {
     try {
         const product = await PrintfulService.getProduct(Number(req.params.id));
         res.json(product);
-    } catch (error) {
-        res.status(500).json({ error: (error as Error).message });
+    } catch (error: any) {
+        if (error.response) {
+            res.status(error.response.status).json({
+                message: error.response.data.message || 'Error fetching product.',
+            });
+        } else {
+            res.status(500).json({ error: (error as Error).message });
+        }
     }
 });
 
