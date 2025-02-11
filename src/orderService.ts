@@ -1,21 +1,8 @@
 import Stripe from "stripe";
 import PrintfulService from "./printfulService";
-import StripeService from "./stripeService";
-import { Cart, Order } from "./types";
+import { Order } from "./types";
 
 export default class OrderService {
-
-    static async getLineItems(cart: Cart): Promise<Stripe.Checkout.SessionCreateParams.LineItem[]> {
-        const lineItems = await Promise.all(Object.entries(cart.items).map(async ([id, item]) => {
-            const variant = await PrintfulService.getVariant(Number(id));
-            const lineItem: Stripe.Checkout.SessionCreateParams.LineItem = {
-                price_data: StripeService.getPriceData(variant),
-                quantity: item.quantity,
-            }
-            return lineItem;
-        }));
-        return lineItems;
-    }
 
     // Takes a stripe.checkout.Session object as an input and places an order on Printful. Returns Printful's API response
     static async placeOrder(checkoutSession: Stripe.Checkout.Session) {

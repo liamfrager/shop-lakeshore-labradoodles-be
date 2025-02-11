@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import Stripe from 'stripe';
 import { Cart } from './types';
-import OrderService from './orderService';
+import PrintfulService from './printfulService';
 
 dotenv.config();
 const STRIPE_API_KEY = process.env.STRIPE_API_KEY!;
@@ -18,7 +18,7 @@ export default class StripeService {
         }, {} as { [key: number]: number });
 
         const checkoutSessionParams: Stripe.Checkout.SessionCreateParams = {
-            line_items: await OrderService.getLineItems(cart),
+            line_items: await StripeService.getLineItems(cart),
             mode: 'payment',
             shipping_address_collection: {'allowed_countries': ['US']},
             success_url: FE_DOMAIN + '/success',
@@ -28,8 +28,21 @@ export default class StripeService {
         return this.stripe.checkout.sessions.create(checkoutSessionParams);
     }
 
+    // Takes cart data in as an input and returns Stripe line items for placing an order.
+    static async getLineItems(cart: Cart): Promise<Stripe.Checkout.SessionCreateParams.LineItem[]> {
+        const lineItems = await Promise.all(Object.entries(cart.items).map(async ([id, item]) => {
+            const variant = await PrintfulService.getVariant(Number(id));
+            const lineItem: Stripe.Checkout.SessionCreateParams.LineItem = {
+                price_data: StripeService.getPriceData(variant),
+                quantity: item.quantity,
+            }
+            return lineItem;
+        }));
+        return lineItems;
+    }
+
     
-    // Takes a Printful variant as an input and returns a dictionary formatted as 'price-data' for the Stripe API session creation
+    // Takes a Printful variant as an input and returns a dictionary formatted as 'price-data' for the Stripe API session creation.
     static getPriceData(variant: any): Stripe.Checkout.SessionCreateParams.LineItem.PriceData {
         const priceData = {
             currency: variant.currency.toLowerCase(),
