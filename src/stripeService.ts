@@ -51,7 +51,7 @@ export default class StripeService {
                 name: variant.name,
                 // TODO: Implement product descriptions
                 description: variant.name,
-                images: variant.files.map((file: any) => file.thumbnail_url),
+                images: variant.files.reverse().map((file: any) => file.thumbnail_url),
             },
         }
         return priceData;
