@@ -15,35 +15,6 @@ class EmailService {
     public static function init() {
         self::$emailHostUser = getenv('EMAIL_HOST_USER');
         self::$emailHostPassword = getenv('EMAIL_HOST_PASSWORD');
-
-        $order = [
-            'id' => '12345',
-            'recipient' => [
-                'name' => 'Brittany Frager',
-                'address1' => '6 Percy Drive',
-                'address2' => '',
-                'city' => 'Wolfeboro',
-                'state_code' => 'NH',
-                'zip' => '03894',
-                'country_name' => 'USA',
-                'email' => 'liam.frager@gmail.com',
-            ],
-            'items' => [
-                [
-                    'name' => 'Doodle Mom Unisex T-Shirt',
-                    'retail_price' => 25.00,
-                    'quantity' => 2,
-                    'files' => [['thumbnail_url' => 'https://files.cdn.printful.com/files/5ec/5ecf9bf622593901044cd46571657199_preview.png']],
-                ],
-                [
-                    'name' => 'Life is Better with a Lakeshore Labradoodle Unisex Sweatshirt',
-                    'retail_price' => 35.00,
-                    'quantity' => 1,
-                    'files' => [['thumbnail_url' => 'https://files.cdn.printful.com/files/132/1328ff6df99a86b2ee986c6991554b13_preview.png']],
-                ],
-            ],
-        ];
-        // self::sendOrderConfirmationEmail($order);
     }
 
     private static function getEmailBase() {

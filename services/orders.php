@@ -24,7 +24,7 @@ class OrderService {
                 'email' => 'lakeshorelabradoodles@gmail.com',
                 'phone' => '+1(860)478-0267',
                 'message' => 'Thank you for your purchase!',
-                'logo_url' => 'https://shop.lakeshorelabradoodles.com/static/images/logo.png',
+                'logo_url' => 'https://shop.lakeshorelabradoodles.com/static/logo.png',
                 'store_name' => 'Lakeshore Labradoodles',
             ]
         ];

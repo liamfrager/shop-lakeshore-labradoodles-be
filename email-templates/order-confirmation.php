@@ -82,6 +82,6 @@
 
     <!-- LOGO IMAGE -->
     <hr>
-    <img src="https://shop.lakeshorelabradoodles.com/static/images/logo.png" alt="Lakeshore Labradoodles Logo" height="100">
+    <img src="https://shop.lakeshorelabradoodles.com/static/logo.png" alt="Lakeshore Labradoodles Logo" height="100">
 </body>
 </html>
