@@ -10,20 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout the repository to get access to the code
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    # Set up SSH
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SG_SSH_PRIVATE_KEY }}
-
-    # SSH into the server and run git pull
+    # Run SSH command with the private key inline
     - name: SSH into SiteGround and pull latest code
       run: |
-        ssh -o StrictHostKeyChecking=no -p 18765 ${{ secrets.SG_HOST }}@${{ secrets.SG_USER }} << 'EOF'
-          cd www/api.shop.lakeshorelabradoodles.com
+        echo "${{ secrets.SG_SSH_KEY }}" > private_key
+        chmod 600 private_key
+        ssh -o StrictHostKeyChecking=no -i private_key -p 18765 ${{ secrets.SG_USER }}@${{ secrets.SG_HOST }} << 'EOF'
+          cd /www/api.shop.lakeshorelabradoodles.com/public_html
           git pull origin main
         EOF
+        rm private_key  # Clean up the private key after use
