@@ -1,0 +1,29 @@
+name: Deploy to SiteGround
+
+on:
+  push:
+    branches:
+      - main  # Adjust to your preferred branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository to get access to the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up SSH
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SG_SSH_PRIVATE_KEY }}
+
+    # SSH into the server and run git pull
+    - name: SSH into SiteGround and pull latest code
+      run: |
+        ssh -o StrictHostKeyChecking=no -p 18765 ${{ secrets.SG_HOST }}@${{ secrets.SG_USER }} << 'EOF'
+          cd www/api.shop.lakeshorelabradoodles.com
+          git pull origin main
+        EOF
