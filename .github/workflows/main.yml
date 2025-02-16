@@ -3,25 +3,23 @@ name: Deploy to SiteGround
 on:
   push:
     branches:
-      - main  # Adjust to your preferred branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Create SSH Key
+    - name: Set up SSH
       run: |
-        echo "${{ secrets.SG_SSH_PRIVATE_KEY }}" > private_key
-        chmod 600 private_key
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SG_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -p ${{ secrets.SG_PORT }} ${{ secrets.SG_HOST }} >> ~/.ssh/known_hosts
+        
     - name: Test SSH Connection
-      run: ssh -vvv -o StrictHostKeyChecking=no -i private_key -p 18765 ${{ secrets.SG_USER }}@${{ secrets.SG_HOST }} "echo 'SSH Connection Successful'"
+      run: ssh -vvv -o StrictHostKeyChecking=no -i private_key -p ${{ secrets.SG_PORT }} ${{ secrets.SG_USER }}@${{ secrets.SG_HOST }} "echo 'SSH Connection Successful'"
+    
     - name: SSH into SiteGround and pull latest code
       run: |
-        ssh -o StrictHostKeyChecking=no -i private_key -p 18765 ${{ secrets.SG_USER }}@${{ secrets.SG_HOST }} << 'EOF'
-          cd /www/api.shop.lakeshorelabradoodles.com/public_html
-          git pull origin main
-        EOF
-    - name: Clean up SSH Key
-      run: |
-        rm private_key
+        ssh -p ${{ secrets.SG_PORT }} ${{ secrets.SG_USER }}@${{ secrets.SG_HOST }} "cd www/api.shop.lakeshorelabradoodles.com/public_html && git pull origin main"
