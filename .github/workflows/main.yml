@@ -18,7 +18,7 @@ jobs:
         ssh-keyscan -p ${{ secrets.SG_PORT }} ${{ secrets.SG_HOST }} >> ~/.ssh/known_hosts
         
     - name: Test SSH Connection
-      run: ssh -vvv -o StrictHostKeyChecking=no -i private_key -p ${{ secrets.SG_PORT }} ${{ secrets.SG_USER }}@${{ secrets.SG_HOST }} "echo 'SSH Connection Successful'"
+      run: ssh -vvv -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -p ${{ secrets.SG_PORT }} ${{ secrets.SG_USER }}@${{ secrets.SG_HOST }} "echo 'SSH Connection Successful'" ssh -vvv -o StrictHostKeyChecking=no -i private_key -p ${{ secrets.SG_PORT }} ${{ secrets.SG_USER }}@${{ secrets.SG_HOST }} "echo 'SSH Connection Successful'"
     
     - name: SSH into SiteGround and pull latest code
       run: |
