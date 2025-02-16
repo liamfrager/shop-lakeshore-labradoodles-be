@@ -13,7 +13,7 @@ jobs:
     # Run SSH command with the private key inline
     - name: SSH into SiteGround and pull latest code
       run: |
-        echo "${{ secrets.SG_SSH_KEY }}" > private_key
+        echo "${{ secrets.SG_SSH_PRIVATE_KEY }}" > private_key
         chmod 600 private_key
         ssh -o StrictHostKeyChecking=no -i private_key -p 18765 ${{ secrets.SG_USER }}@${{ secrets.SG_HOST }} << 'EOF'
           cd /www/api.shop.lakeshorelabradoodles.com/public_html
