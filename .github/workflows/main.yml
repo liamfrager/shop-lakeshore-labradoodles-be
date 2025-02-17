@@ -10,20 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Set up SSH
+    - name: Setup SSH with a passphrase
+      env:
+        SSH_PASSPHRASE: ${{secrets.SG_PASSWORD}}
+        SSH_PRIVATE_KEY: ${{secrets.SG_SSH_PRIVATE_KEY}}
       run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SG_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -p ${{ secrets.SG_PORT }} ${{ secrets.SG_HOST }} >> ~/.ssh/known_hosts
-
-    - name: Start SSH Agent and Add Key with Passphrase
-      run: |
-        eval $(ssh-agent -s)
-        echo "${{ secrets.SG_PASSWORD }}" | ssh-add ~/.ssh/id_rsa
-        
-    - name: Test SSH Connection
-      run: ssh -vvv -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -p ${{ secrets.SG_PORT }} ${{ secrets.SG_USER }}@${{ secrets.SG_HOST }} "echo 'SSH Connection Successful'" ssh -vvv -o StrictHostKeyChecking=no -i private_key -p ${{ secrets.SG_PORT }} ${{ secrets.SG_USER }}@${{ secrets.SG_HOST }} "echo 'SSH Connection Successful'"
+        ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+        echo "echo $SSH_PASSPHRASE" > ~/.ssh_askpass && chmod +x ~/.ssh_askpass
+        echo "$SSH_PRIVATE_KEY" | tr -d '\r' | DISPLAY=None SSH_ASKPASS=~/.ssh_askpass ssh-add - >/dev/null
     
     - name: SSH into SiteGround and pull latest code
       run: |
