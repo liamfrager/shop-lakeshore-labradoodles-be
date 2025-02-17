@@ -23,6 +23,12 @@ jobs:
         
         # Add the private key to the agent using the passphrase
         echo "$SSH_PRIVATE_KEY" | tr -d '\r' | DISPLAY=None SSH_ASKPASS=~/.ssh_askpass ssh-add - >/dev/null
+
+    - name: Add SiteGround to known_hosts
+      run: |
+        # Add the host to known_hosts to avoid host key verification error
+        mkdir -p ~/.ssh
+        ssh-keyscan -p ${{ secrets.SG_PORT }} ${{ secrets.SG_HOST }} >> ~/.ssh/known_hosts
     
     - name: SSH into SiteGround and pull latest code
       run: |
