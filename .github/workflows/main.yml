@@ -10,13 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Setup SSH with a passphrase
+    - name: Set up SSH with passphrase
       env:
-        SSH_PASSPHRASE: ${{secrets.SG_PASSWORD}}
-        SSH_PRIVATE_KEY: ${{secrets.SG_SSH_PRIVATE_KEY}}
+        SSH_PASSPHRASE: ${{ secrets.SG_PASSWORD }}
+        SSH_PRIVATE_KEY: ${{ secrets.SG_SSH_PRIVATE_KEY }}
       run: |
-        ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+        # Start the SSH agent and capture the output for environment variables
+        eval $(ssh-agent -s)
+        
+        # Create the SSH_ASKPASS script to provide the passphrase
         echo "echo $SSH_PASSPHRASE" > ~/.ssh_askpass && chmod +x ~/.ssh_askpass
+        
+        # Add the private key to the agent using the passphrase
         echo "$SSH_PRIVATE_KEY" | tr -d '\r' | DISPLAY=None SSH_ASKPASS=~/.ssh_askpass ssh-add - >/dev/null
     
     - name: SSH into SiteGround and pull latest code
