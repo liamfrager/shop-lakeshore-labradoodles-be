@@ -22,6 +22,6 @@ elseif (preg_match('#^/webhooks(/.*)?$#', $requestUri)) {
     include 'controllers/webhooks.php';
 } 
 else {
-    echo json_encode(["error" => "Invalid API endpoint"]);
+   include 'controllers/test.php';
 }
 ?>
