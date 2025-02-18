@@ -1,7 +1,6 @@
 <?php
 include_once __DIR__ . '/services/email.php';
 include_once __DIR__ . '/config/loadEnv.php';
-loadEnv(__DIR__ . '/config/.env');
 
 header("Access-Control-Allow-Origin: " . getenv("FE_DOMAIN"));
 header("Access-Control-Allow-Methods: GET, POST");

@@ -2,7 +2,6 @@
 require 'vendor/autoload.php';
 include_once __DIR__ . '/printful.php';
 include_once __DIR__ . '/../config/loadEnv.php';
-loadEnv(__DIR__ . '/../.env');
 
 class StripeService {
     public function __construct() {

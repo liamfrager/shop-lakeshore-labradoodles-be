@@ -3,7 +3,6 @@ require_once 'vendor/autoload.php';  // Make sure Stripe SDK is installed via Co
 include_once __DIR__ . '/../services/email.php';
 include_once __DIR__ . '/../services/orders.php';
 include_once __DIR__ . '/../config/loadEnv.php';
-loadEnv(__DIR__ . '/../config/.env');
 
 error_log("\nWebhook received: " . json_encode($_POST));
 // Set your secret key (from Stripe dashboard)
