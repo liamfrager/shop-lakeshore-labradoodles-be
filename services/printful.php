@@ -1,6 +1,5 @@
 <?php
 include_once __DIR__ . '/../config/loadEnv.php';
-loadEnv(__DIR__ . '/../.env');
 
 class PrintfulService {
     private static $authToken;
