@@ -30,15 +30,15 @@ class OrderService {
         ];
 
         // Convert metadata to items
-        if (isset($checkoutSession->metadata)) {
-            foreach ($checkoutSession->metadata as $id => $quantity) {
-                $order['items'][] = [
+        $metadata = json_decode(json_encode($checkoutSession->metadata), true);
+        if (isset($metadata)) {
+            foreach ($metadata as $id => $quantity) {
+                array_push($order['items'], [
                     'sync_variant_id' => (int)$id,
                     'quantity' => (int)$quantity
-                ];
+                ]);
             }
         }
-        error_log('PLACING ORDER: ' . print_r($order, true));
 
         // Call the PrintfulService to place the order
         return PrintfulService::placeOrder($order);
